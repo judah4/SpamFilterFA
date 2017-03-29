@@ -11,11 +11,30 @@ namespace SpamFilterAutomata
     {
         static void Main(string[] args)
         {
+            int curState = 0;
+            var state = new DocState();
+
             using (var textStream = File.OpenText("messagefile.txt"))
             {
                 while (!textStream.EndOfStream)
                 {
-                    Console.Write((char)textStream.Read());
+                    var read = (char) textStream.Read();
+                    Console.Write(read);
+                    if (state.ReadNext(read))
+                    {
+                        if (state.MoveToNextState)
+                        {
+                            Console.WriteLine("Ready to go to next state");
+                            Console.ReadKey();
+                        }
+                    }
+                    else
+                    {
+                        state.Reset();
+                        //single backtrack revaluate
+                        state.ReadNext(read);
+                    }
+                    
                 }
             }
 
