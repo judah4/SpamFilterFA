@@ -12,7 +12,7 @@ namespace SpamFilterAutomata
         static void Main(string[] args)
         {
             int curState = 0;
-            var state = new DocState();
+            IState state = new DocState(new HeaderState(new HeaderEndState(new ReadBodyState(null))));
 
             using (var textStream = File.OpenText("messagefile.txt"))
             {
@@ -26,6 +26,7 @@ namespace SpamFilterAutomata
                         {
                             Console.WriteLine("Ready to go to next state");
                             Console.ReadKey();
+                            state = state.NextState;
                         }
                     }
                     else

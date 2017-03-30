@@ -6,22 +6,20 @@ using System.Threading.Tasks;
 
 namespace SpamFilterAutomata
 {
-    public class DocState : IState
+    public class HeaderEndState : IState
     {
         public string Expected { get; protected set; }
         public int CurrentIndex { get; protected set; }
 
         public bool MoveToNextState { get { return CurrentIndex >= Expected.Length; } }
-
         public IState NextState { get; protected set; }
 
 
-        public DocState(IState nextState)
+        public HeaderEndState(IState nextState)
         {
             CurrentIndex = 0;
-            Expected = "<DOC>";
+            Expected = "</DOCID>";
             NextState = nextState;
-
         }
 
         public bool ReadNext(char character)

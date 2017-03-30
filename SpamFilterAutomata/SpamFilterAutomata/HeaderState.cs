@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SpamFilterAutomata
 {
-    public class DocState : IState
+    public class HeaderState : IState
     {
         public string Expected { get; protected set; }
         public int CurrentIndex { get; protected set; }
@@ -16,10 +16,10 @@ namespace SpamFilterAutomata
         public IState NextState { get; protected set; }
 
 
-        public DocState(IState nextState)
+        public HeaderState(IState nextState)
         {
             CurrentIndex = 0;
-            Expected = "<DOC>";
+            Expected = "<DOCID>";
             NextState = nextState;
 
         }
