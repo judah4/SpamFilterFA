@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseState.cs" />
     <Compile Include="DocState.cs" />
     <Compile Include="HeaderEndState.cs" />
     <Compile Include="HeaderState.cs" />
@@ -49,6 +50,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadBodyState.cs" />
+    <Compile Include="StateMachine.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

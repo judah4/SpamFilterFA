@@ -19,7 +19,10 @@ namespace SpamFilterAutomata
 
         public IState NextState { get; protected set; }
 
-        public ReadBodyState(IState nextState)
+        public StateMachine Automata { get; protected set; }
+
+
+        public ReadBodyState(IState nextState, StateMachine stateMachine)
         {
             CurrentIndex = 0;
             NextState = nextState;
@@ -37,6 +40,8 @@ namespace SpamFilterAutomata
                 "winnings",
             };
             Valid = new List<string>(Expected);
+            Automata = stateMachine;
+
         }
 
         public bool ReadNext(char character)

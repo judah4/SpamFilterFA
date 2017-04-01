@@ -11,10 +11,21 @@ namespace SpamFilterAutomata
 
         bool MoveToNextState { get; }
 
-        bool ReadNext(char character);
+        Status ReadNext(char character);
 
         void Reset();
 
-        IState NextState { get; }
+        List<IState> NextStates { get; }
+
+        StateMachine Automata { get; }
+
+        IState OnComplete();
+    }
+
+    public enum Status
+    {
+        Running,
+        Success,
+        Fail
     }
 }

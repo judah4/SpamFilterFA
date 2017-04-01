@@ -15,12 +15,14 @@ namespace SpamFilterAutomata
 
         public IState NextState { get; protected set; }
 
+        public StateMachine Automata { get; protected set; }
 
-        public HeaderState(IState nextState)
+        public HeaderState(IState nextState, StateMachine stateMachine)
         {
             CurrentIndex = 0;
             Expected = "<DOCID>";
             NextState = nextState;
+            Automata = stateMachine;
 
         }
 

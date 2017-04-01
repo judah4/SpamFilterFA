@@ -12,7 +12,12 @@ namespace SpamFilterAutomata
         static void Main(string[] args)
         {
             int curState = 0;
-            IState state = new DocState(new HeaderState(new HeaderEndState(new ReadBodyState(null))));
+            var stateMachine = new StateMachine();
+            var start = new DocState(stateMachine);
+            stateMachine.CurrentState = start;
+            stateMachine.StartState = start;
+
+           // IState state = new DocState(new HeaderState(new HeaderEndState(new ReadBodyState(null, stateMachine), stateMachine), stateMachine), stateMachine);
 
             using (var textStream = File.OpenText("messagefile.txt"))
             {
@@ -20,16 +25,17 @@ namespace SpamFilterAutomata
                 {
                     var read = (char) textStream.Read();
                     Console.Write(read);
-                    if (state.ReadNext(read))
+                    var status = start.ReadNext(read);
+                    if (status == Status.Success)
                     {
-                        if (state.MoveToNextState)
+                        if (start.MoveToNextState)
                         {
                             Console.WriteLine("Ready to go to next state");
                             Console.ReadKey();
                             state = state.NextState;
                         }
                     }
-                    else
+                    else if(status == Status.Fail)
                     {
                         state.Reset();
                         //single backtrack revaluate

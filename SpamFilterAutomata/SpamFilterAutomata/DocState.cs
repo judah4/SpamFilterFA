@@ -6,36 +6,48 @@ using System.Threading.Tasks;
 
 namespace SpamFilterAutomata
 {
-    public class DocState : IState
+    public class DocState : BaseState
     {
         public string Expected { get; protected set; }
         public int CurrentIndex { get; protected set; }
 
-        public bool MoveToNextState { get { return CurrentIndex >= Expected.Length; } }
-
-        public IState NextState { get; protected set; }
+        public override bool MoveToNextState { get { return CurrentIndex >= Expected.Length; } }
 
 
-        public DocState(IState nextState)
+        public DocState(StateMachine stateMachine) : base(stateMachine)
         {
             CurrentIndex = 0;
             Expected = "<DOC>";
-            NextState = nextState;
+            Automata = stateMachine;
 
         }
 
-        public bool ReadNext(char character)
+        public override Status ReadNext(char character)
         {
             if (Expected[CurrentIndex] != character)
-                return false;
+                return Status.Fail;
 
             CurrentIndex++;
-            return true;
+
+            if (!MoveToNextState)
+            {
+                return Status.Running;
+            }
+
+            return Status.Success;
         }
 
-        public void Reset()
+        public override void Reset()
         {
             CurrentIndex = 0;
+        }
+
+        public override IState OnComplete()
+        {
+            if (!MoveToNextState)
+                return null;
+
+            return NextStates[0];
         }
     }
 }
