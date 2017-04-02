@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpamFilterAutomata
+namespace SpamFilterAutomata.Transitions
 {
-    public class DocState : State
+    public class DocStateTransfer :StateTransfer
     {
         public string Expected { get; protected set; }
         public int CurrentIndex { get; protected set; }
 
-        public DocState()
+        public DocStateTransfer()
         {
             Expected = "<DOC>";
         }
@@ -23,12 +23,17 @@ namespace SpamFilterAutomata
 
             CurrentIndex++;
 
-            //if (!MoveToNextState)
-            //{
-            //    return Status.Running;
-            //}
+            if (Expected.Length > CurrentIndex)
+            {
+                return Status.Running;
+            }
 
             return Status.Success;
+        }
+
+        public override void Reset()
+        {
+            CurrentIndex = 0;
         }
     }
 }

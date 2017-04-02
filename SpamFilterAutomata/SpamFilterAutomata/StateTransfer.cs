@@ -11,9 +11,20 @@ namespace SpamFilterAutomata
         public State NewState { get; set; }
         public State PreviousState { get; set; }
 
+
         public virtual bool CanMove()
         {
             return true;
+        }
+
+        public virtual Status ReadNext(char character)
+        {
+            return Status.Success;
+        }
+
+        public virtual void Reset()
+        {
+            
         }
     }
 }

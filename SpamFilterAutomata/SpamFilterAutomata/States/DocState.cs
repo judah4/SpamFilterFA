@@ -3,23 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SpamFilterAutomata.States;
+using SpamFilterAutomata.Transitions;
 
 namespace SpamFilterAutomata
 {
-    public class State
+    public class DocState : State
     {
 
-        public string StateName { get; set; }
 
-        public Dictionary<State, StateTransfer> Transfers { get; set; }
-
-        public State()
+        public DocState()
         {
-            StateName = "BadState";
-            Transfers = new Dictionary<State, StateTransfer>();
+            StateName = "DocState";
+            var docIdState = new DocIdState();
+            //Transfers.Add(docIdState, new DocStateTransfer() {NewState = docIdState, PreviousState = this});
         }
 
-        public virtual Status ReadNext(char character)
+
+        public override Status ReadNext(char character)
         {
             bool allFail = true;
             foreach (var transfer in Transfers)
@@ -36,7 +37,7 @@ namespace SpamFilterAutomata
             }
 
 
-            if (allFail)
+            if(allFail)
                 return Status.Failure;
 
             if (NextState == null)
@@ -46,32 +47,5 @@ namespace SpamFilterAutomata
 
             return Status.Success;
         }
-
-        public State NextState { get; protected set; }
-
-        public void Reset()
-        {
-            NextState = null;
-            foreach (var transfer in Transfers)
-            {
-                transfer.Value.Reset();
-            }
-
-            OnReset();
-        }
-
-        public virtual void OnReset()
-        {
-            
-        }
-
-    }
-
-
-    public enum Status
-    {
-        Running,
-        Success,
-        Failure
     }
 }
