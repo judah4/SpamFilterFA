@@ -60,6 +60,7 @@ namespace SpamFilterAutomata.States
         public override void OnReset()
         {
             spamFilter.Complete = false;
+            spamFilter.Reset();
         }
     }
 }
